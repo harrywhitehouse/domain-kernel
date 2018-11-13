@@ -1,0 +1,33 @@
+{
+    "name": "domain-kernel",
+    "version": "0.0.1",
+    "private": false,
+    "description": "A lightweight set of base classes to support domain-driven design (Entity, ValueObject, DomainEvent, etc...).",
+    "main": "main.js",
+    "scripts": {
+        "test": "mocha \"./tests/**/*.test.js\" --grep @integration --invert"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/harrywhitehouse/domain-kernel.git"
+    },
+    "engines": {
+        "node": ">=7.6.0"
+    },
+    "keywords": [
+        "ddd",
+        "domain-driven",
+        "design",
+        "entity",
+        "value-object"
+    ],
+    "author": "Milos Mrdovic <shellexecute@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/harrywhitehouse/domain-kernel/issues"
+    },
+    "homepage": "https://github.com/harrywhitehouse/domain-kernel#readme",
+    "devDependencies": {
+        "mocha": "^5.2.0"
+    }
+}
