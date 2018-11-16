@@ -1,7 +1,6 @@
 'use strict';
 
-const ValueObject = require('./src/value-object');
-
 module.exports = {
-    ValueObject
+    Entity: require('./src/entity'),
+    ValueObject: require('./src/value-object')
 };
