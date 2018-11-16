@@ -13,81 +13,25 @@ class ValueObjectStub extends ValueObject {
 
 describe('ValueObject', () => {
     describe('equals(other)', () => {
-
         it('is defined', () => {
             let sut = new ValueObjectStub(1, 'test');
             assert.strictEqual(typeof(sut.equals), 'function');
         });
 
-        describe('returns false if', () => {
-            it('other is null', () => {
-                let sut = new ValueObjectStub(1, 'test');
-    
-                assert.strictEqual(sut.equals(null), false);
-            });
-    
-            it('other is undefined', () => {
-                let sut = new ValueObjectStub(1, 'test');
-    
-                assert.strictEqual(sut.equals(undefined), false);
-            });
-
-            it('other is not ValueObject', () => {
-                let sut = new ValueObjectStub(1, 'test');
-                let other = { a: 1, b: 'test' };
-    
-                assert.strictEqual(sut.equals(other), false);
-            });
-
-            it('other does not have equal properties', () => {
-                let sut1 = new ValueObjectStub(1, 'test');
-                let sut2 = new ValueObjectStub(2, 'test');
-    
-                assert.strictEqual(sut1.equals(sut2), false);
-                assert.strictEqual(sut2.equals(sut1), false);
-            });
-
-            it('other does not have strictly equal properties', () => {
-                let sut1 = new ValueObjectStub(0, 'test');
-                let sut2 = new ValueObjectStub(false, 'test');
-    
-                assert.strictEqual(sut1.equals(sut2), false);
-                assert.strictEqual(sut2.equals(sut1), false);
-            });
-
-            it('other has child non-ValueObjects with same properties', () => {
-                let sut1 = new ValueObjectStub(2, { x: 1 });
-                let sut2 = new ValueObjectStub(2, { x: 1 });
-    
-                assert.strictEqual(sut1.equals(sut2), false);
-                assert.strictEqual(sut2.equals(sut1), false);
-            });
-
-            it('other has non-equal child ValueObjects', () => {
-                let sut1 = new ValueObjectStub(2, new ValueObjectStub(1, 'test'));
-                let sut2 = new ValueObjectStub(2, new ValueObjectStub(1, 'pest'));
-    
-                assert.strictEqual(sut1.equals(sut2), false);
-                assert.strictEqual(sut2.equals(sut1), false);
-            });
-        });
-        
-        describe('returns true if', () => {
-            it('other is the same object', () => {
+        describe('returns true if other', () => {
+            it('is the same object', () => {
                 let sut = new ValueObjectStub(1, 'test');
     
                 assert.strictEqual(sut.equals(sut), true);
             });
-    
-            it('other has strictly equal properties', () => {
+            it('has strictly equal value properties', () => {
                 let sut1 = new ValueObjectStub(1, 'test');
                 let sut2 = new ValueObjectStub(1, 'test');
     
                 assert.strictEqual(sut1.equals(sut2), true);
                 assert.strictEqual(sut2.equals(sut1), true);
             });
-    
-            it('other has the same child non-ValueObject', () => {
+            it('has the same object properties', () => {
                 let child = { x: 1 };
                 let sut1 = new ValueObjectStub(2, child);
                 let sut2 = new ValueObjectStub(2, child);
@@ -95,8 +39,7 @@ describe('ValueObject', () => {
                 assert.strictEqual(sut1.equals(sut2), true);
                 assert.strictEqual(sut2.equals(sut1), true);
             });
-
-            it('other has equal child ValueObjects', () => {
+            it('has equal ValueObject properties', () => {
                 let sut1 = new ValueObjectStub(2, new ValueObjectStub(1, 'test'));
                 let sut2 = new ValueObjectStub(2, new ValueObjectStub(1, 'test'));
     
@@ -105,7 +48,54 @@ describe('ValueObject', () => {
             });
         });
 
-        describe('where children define equals() method', () => {
+        describe('returns false if other', () => {
+            it('is null', () => {
+                let sut = new ValueObjectStub(1, 'test');
+    
+                assert.strictEqual(sut.equals(null), false);
+            });
+            it('is undefined', () => {
+                let sut = new ValueObjectStub(1, 'test');
+    
+                assert.strictEqual(sut.equals(undefined), false);
+            });
+            it('is not ValueObject', () => {
+                let sut = new ValueObjectStub(1, 'test');
+                let other = { a: 1, b: 'test' };
+    
+                assert.strictEqual(sut.equals(other), false);
+            });
+            it('does not have equal value properties', () => {
+                let sut1 = new ValueObjectStub(1, 'test');
+                let sut2 = new ValueObjectStub(2, 'test');
+    
+                assert.strictEqual(sut1.equals(sut2), false);
+                assert.strictEqual(sut2.equals(sut1), false);
+            });
+            it('has similar but not strictly equal value properties', () => {
+                let sut1 = new ValueObjectStub(0, 'test');
+                let sut2 = new ValueObjectStub(false, 'test');
+    
+                assert.strictEqual(sut1.equals(sut2), false);
+                assert.strictEqual(sut2.equals(sut1), false);
+            });
+            it('has different object properties', () => {
+                let sut1 = new ValueObjectStub(2, { x: 1 });
+                let sut2 = new ValueObjectStub(2, { x: 1 });
+    
+                assert.strictEqual(sut1.equals(sut2), false);
+                assert.strictEqual(sut2.equals(sut1), false);
+            });
+            it('has non-equal ValueObject properties', () => {
+                let sut1 = new ValueObjectStub(2, new ValueObjectStub(1, 'test'));
+                let sut2 = new ValueObjectStub(2, new ValueObjectStub(1, 'pest'));
+    
+                assert.strictEqual(sut1.equals(sut2), false);
+                assert.strictEqual(sut2.equals(sut1), false);
+            });
+        });
+
+        describe('where child properties define equals() method', () => {
             class ChildStub {
                 constructor(x) {
                     this.x = x;
@@ -116,7 +106,7 @@ describe('ValueObject', () => {
             }
 
             describe('returns false if', () => {
-                it('child equals() method returns false', () => {
+                it('equals() method returns false', () => {
                     let sut1 = new ValueObjectStub(2, new ChildStub(1));
                     let sut2 = new ValueObjectStub(2, new ChildStub(2));
     
@@ -126,7 +116,7 @@ describe('ValueObject', () => {
             });
 
             describe('returns true if', () => {
-                it('child equals() method returns true', () => {
+                it('equals() method returns true', () => {
                     let sut1 = new ValueObjectStub(2, new ChildStub(1));
                     let sut2 = new ValueObjectStub(2, new ChildStub(1));
     
